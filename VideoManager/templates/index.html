@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة المذاكرة بتاعتي</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f9; margin: 0; padding: 20px; display: flex; flex-wrap: wrap; gap: 20px; }
+        .sidebar { flex: 1; min-width: 250px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); height: fit-content; max-height: 90vh; overflow-y: auto;}
+        .main-content { flex: 3; min-width: 300px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h2 { color: #333; margin-top: 0; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
+        ul { list-style: none; padding: 0; }
+        li { padding: 12px; background: #e2e8f0; margin-bottom: 8px; cursor: pointer; border-radius: 5px; transition: 0.3s; font-weight: bold; direction: ltr; text-align: right; }
+        li:hover { background: #cbd5e1; transform: translateX(-5px); }
+        video { width: 100%; border-radius: 8px; outline: none; background: #000; }
+        .note-box { width: 95%; height: 150px; margin-top: 15px; padding: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px; resize: vertical; font-family: inherit;}
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>📚 قايمة الدروس</h2>
+        <ul id="videoList">
+            {% for video in videos %}
+                <li onclick="playVideo('{{ video }}')">🎥 {{ video }}</li>
+            {% else %}
+                <li style="direction: rtl;">مفيش فيديوهات. حط ملفاتك في فولدر videos وهتظهر هنا!</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <h2>شاشة العرض</h2>
+        <video id="player" controls>
+            <!-- شيلنا تحديد النوع هنا عشان يقبل أي امتداد نبعته -->
+            <source id="videoSource" src="">
+            متصفحك مش بيدعم تشغيل الفيديو.
+        </video>
+        
+        <h3 style="margin-top: 20px; color: #555;">📝 ملاحظات وتلخيص الدرس</h3>
+        <textarea class="note-box" placeholder="اكتب تلخيصك وأفكارك هنا وأنت بتسمع..."></textarea>
+    </div>
+
+    <script>
+        function playVideo(filename) {
+            const player = document.getElementById('player');
+            const source = document.getElementById('videoSource');
+            source.src = "/video/" + encodeURIComponent(filename); // استخدمنا encodeURIComponent عشان لو اسم الفيديو فيه مسافات أو عربي يشتغل صح
+            player.load(); 
+            player.play(); 
+        }
+    </script>
+
+</body>
+</html>
